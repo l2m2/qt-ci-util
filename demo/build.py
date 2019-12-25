@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 import argparse
-import sys
 import qtciutil
 
 if __name__ == "__main__":

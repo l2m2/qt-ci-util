@@ -1,12 +1,6 @@
 # encoding: utf-8
 
-import platform
-import os
 import argparse
-import sys
-import subprocess
-import glob
-import re
 import qtciutil
 
 if __name__ == "__main__":
