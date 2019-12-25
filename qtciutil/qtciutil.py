@@ -181,7 +181,7 @@ def unit_test(pro_file, build_dir, dist_dir):
   if not os.path.isdir(dist_dir):
     raise QtCiUtilError("no dist directory found.")
   wildcard_path = os.path.normpath(os.path.join(dist_dir, "**/tst_*.exe"))
-  os.environ["PATH"] = os.environ['QT_BIN']() + os.pathsep + os.environ["PATH"]
+  os.environ["PATH"] = os.environ['QT_BIN'] + os.pathsep + os.environ["PATH"]
   for filename in glob.glob(wildcard_path, recursive=True):
     if os.path.isfile(filename):
       pinfo = subprocess.run([filename], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)

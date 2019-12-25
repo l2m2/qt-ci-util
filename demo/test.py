@@ -22,3 +22,5 @@ if __name__ == "__main__":
   build_dir = args['build_dir']
   dist_dir = args['dist_dir']
   qtciutil.unit_test(pro_file, build_dir, dist_dir)
+
+# python test.py -p F:/workspace/l2m2/xxx/test/test.pro -b F:/workspace/l2m2/xxx/test/build -d F:/workspace/l2m2/xxx/dist
