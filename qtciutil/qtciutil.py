@@ -6,6 +6,7 @@ import sys
 import subprocess
 import re
 import multiprocessing
+import glob
 
 class QtCiUtilError(Exception):
   """
@@ -158,6 +159,38 @@ def build(pro_file, build_dir, debug_or_release):
     else:
       make = qtcreator_cmd('mingw32-make')
   build_args = [make, '-j%d' % multiprocessing.cpu_count()]
+  print("build_args: ", build_args)
   pinfo = subprocess.run(build_args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
   if pinfo.returncode != 0:
     raise QtCiUtilError('make failed.')
+
+def unit_test(pro_file, build_dir, dist_dir):
+  """
+  Unit Test.
+
+  :param pro_file
+    file path of test.pro
+  
+  :param build_dir
+    build directory path
+
+  :param dist_dir
+    dest directory path
+  """
+  build(pro_file, build_dir, 'release')
+  if not os.path.isdir(dist_dir):
+    raise QtCiUtilError("no dist directory found.")
+  wildcard_path = os.path.normpath(os.path.join(dist_dir, "**/tst_*.exe"))
+  os.environ["PATH"] = os.environ['QT_BIN']() + os.pathsep + os.environ["PATH"]
+  for filename in glob.glob(wildcard_path, recursive=True):
+    if os.path.isfile(filename):
+      pinfo = subprocess.run([filename], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+      if pinfo.returncode != 0:
+        raise QtCiUtilError('run test failed.')
+      m = re.search(r'Totals:\s(\d+)\spassed,\s(\d+)\sfailed,\s(\d+)\sskipped,\s(\d+)\sblacklisted', pinfo.stdout.decode())
+      if m:
+        print(m.group(0))
+        failed = int(m.group(2))
+        if failed > 0:
+          raise QtCiUtilError("test({exe}) failed.".format(exe=filename))
+  print("unit test done.")

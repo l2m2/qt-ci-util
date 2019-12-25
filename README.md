@@ -15,6 +15,8 @@ import qtciutil
 qt_version_str = qtciutil.qt_version()
 # Build Qt Project
 qtciutil.build('/home/l2m2/workspace/xxx/src/xxx.pro', '/home/l2m2/workspace/xxx/build', 'debug')
+# Unit Test
+qtciutil.unit_test('/home/l2m2/workspace/xxx/test/test.pro', '/home/l2m2/workspace/xxx/build', '/home/l2m2/workspace/xxx/dist')
 ```
 
 ## License
