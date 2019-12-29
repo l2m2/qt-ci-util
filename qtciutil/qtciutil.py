@@ -148,7 +148,7 @@ def build(pro_file, build_dir, debug_or_release):
   print('qmake_args: ', qmake_args)
   pinfo = subprocess.run(qmake_args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
   if pinfo.returncode != 0:
-    raise QtCiUtilError('qmake failed. %s' % pinfo.stdout().decode('utf-8'))
+    raise QtCiUtilError('qmake failed. %s' % pinfo.stdout.decode())
 
   # build
   platform_system_str = platform_system()
@@ -162,7 +162,7 @@ def build(pro_file, build_dir, debug_or_release):
   print("build_args: ", build_args)
   pinfo = subprocess.run(build_args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
   if pinfo.returncode != 0:
-    raise QtCiUtilError('make failed. %s' % pinfo.stdout().decode('utf-8'))
+    raise QtCiUtilError('make failed. %s' % pinfo.stdout.decode())
 
 def unit_test(pro_file, build_dir, dist_dir):
   """
