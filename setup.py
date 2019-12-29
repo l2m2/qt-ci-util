@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
   name="qtciutil",
-  version="0.0.3",
+  version="0.0.4",
   author="l2m2",
   author_email="l2m2lq@gmail.com",
   description="Some basic python methods for building CI for qt projects.",
