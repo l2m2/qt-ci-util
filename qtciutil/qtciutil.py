@@ -48,7 +48,7 @@ def qt_version():
     stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
   if pinfo.returncode != 0:
     raise QtCiUtilError("qmake -query QT_VERSION faield.")
-  return pinfo.stdout.decode().rstrip()
+  return pinfo.stdout.decode('utf-8', 'ignore').rstrip()
 
 def platform_system():
   """
@@ -67,7 +67,7 @@ def qmake_spec():
     stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
   if pinfo.returncode != 0:
     raise QtCiUtilError("qmake -query QMAKE_SPEC faield.")
-  return pinfo.stdout.decode().rstrip()
+  return pinfo.stdout.decode('utf-8', 'ignore').rstrip()
 
 def _vs_env_dict(env_name):
   """
@@ -148,7 +148,7 @@ def build(pro_file, build_dir, debug_or_release):
   print('qmake_args: ', qmake_args)
   pinfo = subprocess.run(qmake_args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
   if pinfo.returncode != 0:
-    raise QtCiUtilError('qmake failed. %s' % pinfo.stdout.decode())
+    raise QtCiUtilError('qmake failed. %s' % pinfo.stdout.decode('utf-8', 'ignore'))
 
   # build
   platform_system_str = platform_system()
@@ -162,7 +162,7 @@ def build(pro_file, build_dir, debug_or_release):
   print("build_args: ", build_args)
   pinfo = subprocess.run(build_args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
   if pinfo.returncode != 0:
-    raise QtCiUtilError('make failed. %s' % pinfo.stdout.decode())
+    raise QtCiUtilError('make failed. %s' % pinfo.stdout.decode('utf-8', 'ignore'))
 
 def unit_test(pro_file, build_dir, dist_dir):
   """
@@ -187,7 +187,7 @@ def unit_test(pro_file, build_dir, dist_dir):
       pinfo = subprocess.run([filename], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
       if pinfo.returncode != 0:
         raise QtCiUtilError('run test failed.')
-      m = re.search(r'Totals:\s(\d+)\spassed,\s(\d+)\sfailed,\s(\d+)\sskipped,\s(\d+)\sblacklisted', pinfo.stdout.decode())
+      m = re.search(r'Totals:\s(\d+)\spassed,\s(\d+)\sfailed,\s(\d+)\sskipped,\s(\d+)\sblacklisted', pinfo.stdout.decode('utf-8', 'ignore'))
       if m:
         print(m.group(0))
         failed = int(m.group(2))
